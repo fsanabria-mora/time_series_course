@@ -1,0 +1,147 @@
+---
+title: "time_s"
+author: "Fabián Sanabria-Mora"
+format: html
+editor: visual
+---
+
+# Series de tiempo
+
+## Repaso de R
+
+```{r funciones de repaso}
+
+ex <- c(2, 4, 6, 8)
+summary(ex)
+mean(ex)
+sd(ex)
+hist(ex)
+### xlab = "" / nombre del eje x
+### main = "" / título del histograma
+### freq = FALSE / muestra densidad (probabilidades)
+### breaks = 10 / ancho de los rectángulos del histograma
+
+plot(density(c(-20, rep(0,98), 20)), xlim = c(-4, 4), col = "royalblue", lwd = 3) 
+### con línea de densidad
+### También aplican las funciones: main, xlab, ylab, col
+
+```
+
+A continuación se presentan algunos enlaces de documentos base del curso:
+
+[Basic statistics](https://1drv.ms/b/s!AjFqM4QxCQqRtF-brELYLGsEPcsu?e=J13LP2 "Basic statistics")
+
+[Correlation](https://1drv.ms/b/s!AjFqM4QxCQqRtGDUn4Jll1oQc3c1?e=Ysqpbh "Correlation")
+
+[Quiz1](https://1drv.ms/b/s!AjFqM4QxCQqRtGJV0wbPd4bhj6eL?e=4arVTv "Quiz1")
+
+## Conceptos básicos de series de tiempo
+
+**Una serie de tiempo es cualquier conjunto de datos recogidos en diferentes momentos**. El análisis de los datos observados en diferentes puntos de tiempo lleva a problemas únicos que no cubre la estadística clásica. La **dependencia** introducida por el muestreo de datos a lo largo del tiempo restringe la aplicabilidad de muchos métodos estadísticos convencionales. El análisis de este tipo de datos se conoce como **ANÁLISIS DE SERIES DE TIEMPO**.
+
+Los datos se representan como una <u>colección de variables aleatorias indexadas de acuerdo al orden en que se obtienen en el tiempo</u>. Por ejemplo, la temperatura diaria de una ciudad se puede representar mediante una secuencia de variables aleatorias `x1, x2, x3`, en donde `x1` es la T del día 1, `x2` la del día 2, y así sucesivamente. En general, **una colección de variables aleatorias indexadas por un *t* se conoce como un proceso estocástico**.
+
+El objetivo primario de un análisis de series de tiempo es desarrollar modelos matemáticos que proveen descripciones plausibles a la muestra de datos.
+
+```{r ejemplo}
+
+require(astsa)
+plot(jj, type = "o", main = "JJ quarterly earnings per share", ylab = "earnings", xlab = "quarters")
+# jj ya se encuentra en formato de serie de tiempo, por lo que no se requiere el operador ts()
+
+```
+
+En esta gráfica se puede ver una clara tendencia al aumento, no obstante, también se pueden diferenciar las fluctuaciones, **las variaciones estacionales de esa tendencia. Es importante anotar que al principio la variación era MÍNIMA, y luego fue aumentando**, es decir, hay cambios en la variación → **se viola el principio de estacionariedad**.
+
+Otro ejemplo: *flu*
+
+```{r otro ejemplo}
+
+plot(flu, type = "o", main = "Monthly pneumonia and influenza deaths in US", ylab = "Number of deaths per 10.000 people", xlab = "Months", col = "royalblue1")
+
+```
+
+En esta gráfica hay **estacionalidad**, hay un pico cada dos años, más o menos, y la tendencia pareciera ir hacia la disminución (es más difícil de ver).
+
+**Cuando hay estacionalidad NO hay estacionariedad**.
+
+### Función de la media
+
+$\mu_{xt} = E(X_t)$
+
+*E* denota el valor esperado usual. Ej.: media mensual de la temperatura de una ciudad. En este caso, **la media es una función del tiempo**. La función de la media describe solo el comportamiento marginal de una serie de tiempo.
+
+### Función de autocovarianza
+
+**Una variable aleatoria es una función que va del espacio muestral (S) a los números reales. “Es una máquina que produce números aleatorios”**.
+
+$X: S → R$
+
+En la medida que esta máquina produce diferentes números aleatorios, dichos números van formando un **conjunto de datos**. Si se conocen las características de la variable aleatoria, por ejemplo, su distribución, se puede decir algo significativo sobre el conjunto de datos.
+
+Una variable aleatoria puede ser discreta o continua. Ej.: sea $X = [20, 37, 57, …]$
+
+Entonces *X* es una variable aleatoria que puede tomar cualquiera de esos valores. Una vez se conoce el resultado, por ejemplo, *X = 20*, **desaparece la aleatoriedad**. Se dice que 20 es una **REALIZACIÓN DE LA VARIABLE ALEATORIA X**.
+
+De igual manera aplica para una variable aleatoria continua.
+
+**Covarianza:** mide la dependencia lineal entre dos variables aleatorias *(X, Y)*.
+
+$Cov(X,Y) = E[(X-\mu X)(Y-\mu Y)] = Cov(Y,X)$
+
+**Proceso estocástico**: colección / secuencia de variables aleatorias. Es lo contrario a un proceso determinista, ya que, en un proceso estocástico, en cada paso se tiene algo de aleatoriedad.
+
+$X_1, X_2, X_3,...$
+
+$X_t \sim distibution(\mu,\sigma^2)$
+
+Cada variable puede tener su propia distribución, sus propios valores esperados y varianzas, sin embargo, no es posible saber *“en dónde se va a estar”*, como si lo es en un proceso determinístico.
+
+**Una serie de tiempo es la realización de un proceso estocástico** → $X_1$ es el primer punto de datos en la serie de tiempo, $X_2$ el segundo, y así sucesivamente... entonces se conoce la realización de cada punto, **la realización del proceso estocástico que va por detrás**. Y si se conoce cada $X_1, X_2, X_3$, y cómo cambian, se puede decir algo significativo sobre la serie.
+
+**La función de autocovarianza se define como el producto del segundo momento (varianza) para todos los *s* y *t*.** Se toma la covarianza de diferentes elementos de la secuencia (del proceso estocástico). <u>La autocovarianza mide la dependencia lineal entre dos puntos de una misma serie observados en diferentes tiempos</u>.
+
+
+$\gamma(s,t) = Cov(X_s,X_t) = E[(X_s-\mu_s)(X_t-\mu_t)]$
+
+
+Esta fórmula indica que se está calculando la covarianza entre las variables aleatorias en los puntos específicos *s* y *t*. Si $s=t$, la autocovarianza se reduce a la varianza:
+
+$\gamma(t,t) = E[(X_t-\mu_t)^2] = Var(X_t) = \sigma_t^2$
+
+
+Recordar que:
+
+Si $\gamma_x(s,t) = 0$, entonces $X_s$ y $X_t$ no están linealmente relacionados, sin embargo, podría existir alguna dependencia entre ellos. 
+
+Ahora, $\gamma_k = \gamma(t,t + k) \approx C_k$
+
+Esta fórmula indica que se está calculando la covarianza entre las variables aleatorias en los puntos específicos *t* y *t + k*. **Esta función de autocovarianza $\gamma_k$ en el tiempo *k* solo dependerá de la diferencia de tiempo *(k)* entre las variables aleatorias**, esta diferencia de tiempo es la que decide el destino de la autocovarianza. La razón de ello es que se asume que se está trabajando con series de tiempo estacionarias, en donde una parte de la serie temporal tiene las mismas propiedades que las demás partes. 
+
+El hecho de que se tenga la serie de tiempo como una realización de un proceso estocástico, permite aproximar la función de autocovarianza al coeficiente de autocovarianza $C_k$.
+
+
+### Función de autocorrelación (ACF)
+
+
+
+
+### Estacionariedad
+
+Lo que se quiere es que una serie de tiempo sea estacionaria, que no haya ningún cambio sistemático en sus propiedades y comportamiento. 
+
+-	No se quieren ver cambios en la media 
+-	No se quiere ver una tendencia en una serie temporal estacionaria 
+-	No se quieren cambios sistemáticos en la variación 
+-	No se quieren fluctuaciones periódicas
+
+**Lo que se quiere es que las propiedades de una sección de los datos sean muy parecidas a las propiedades de las otras secciones.** 
+
+La estacionariedad es una propiedad de un proceso estocástico de un modelo, no de una serie temporal en sí, pero se habla de serie temporal estacionaria si se piensa que se puede modelar mediante modelos estacionarios **(procesos estocásticos estacionarios)**. 
+
+Se suelen tener series de tiempo NO estacionarias, por lo que hay que hacer TRANSFORMACIONES para volverlas estacionarias. 
+
+
+
+
+### Estacionalidad
