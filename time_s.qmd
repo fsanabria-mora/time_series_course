@@ -93,7 +93,7 @@ $Cov(X,Y) = E[(X-\mu X)(Y-\mu Y)] = Cov(Y,X)$
 
 $X_1, X_2, X_3,...$
 
-$X_t \sim distibution(\mu,\sigma^2)$
+$X_t \sim distribution(\mu,\sigma^2)$
 
 Cada variable puede tener su propia distribución, sus propios valores esperados y varianzas, sin embargo, no es posible saber *“en dónde se va a estar”*, como si lo es en un proceso determinístico.
 

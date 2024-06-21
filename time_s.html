@@ -231,7 +231,7 @@ window.Quarto = {
 <p><span class="math inline">\(Cov(X,Y) = E[(X-\mu X)(Y-\mu Y)] = Cov(Y,X)\)</span></p>
 <p><strong>Proceso estocástico</strong>: colección / secuencia de variables aleatorias. Es lo contrario a un proceso determinista, ya que, en un proceso estocástico, en cada paso se tiene algo de aleatoriedad.</p>
 <p><span class="math inline">\(X_1, X_2, X_3,...\)</span></p>
-<p><span class="math inline">\(X_t \sim distibution(\mu,\sigma^2)\)</span></p>
+<p><span class="math inline">\(X_t \sim distribution(\mu,\sigma^2)\)</span></p>
 <p>Cada variable puede tener su propia distribución, sus propios valores esperados y varianzas, sin embargo, no es posible saber <em>“en dónde se va a estar”</em>, como si lo es en un proceso determinístico.</p>
 <p><strong>Una serie de tiempo es la realización de un proceso estocástico</strong> → <span class="math inline">\(X_1\)</span> es el primer punto de datos en la serie de tiempo, <span class="math inline">\(X_2\)</span> el segundo, y así sucesivamente… entonces se conoce la realización de cada punto, <strong>la realización del proceso estocástico que va por detrás</strong>. Y si se conoce cada <span class="math inline">\(X_1, X_2, X_3\)</span>, y cómo cambian, se puede decir algo significativo sobre la serie.</p>
 <p><strong>La función de autocovarianza se define como el producto del segundo momento (varianza) para todos los <em>s</em> y <em>t</em>.</strong> Se toma la covarianza de diferentes elementos de la secuencia (del proceso estocástico). <u>La autocovarianza mide la dependencia lineal entre dos puntos de una misma serie observados en diferentes tiempos</u>.</p>
@@ -242,7 +242,7 @@ window.Quarto = {
 <p>Si <span class="math inline">\(\gamma_x(s,t) = 0\)</span>, entonces <span class="math inline">\(X_s\)</span> y <span class="math inline">\(X_t\)</span> no están linealmente relacionados, sin embargo, podría existir alguna dependencia entre ellos.</p>
 <p>Ahora, <span class="math inline">\(\gamma_k = \gamma(t,t + k) \approx C_k\)</span></p>
 <p>Esta fórmula indica que se está calculando la covarianza entre las variables aleatorias en los puntos específicos <em>t</em> y <em>t + k</em>. <strong>Esta función de autocovarianza <span class="math inline">\(\gamma_k\)</span> en el tiempo <em>k</em> solo dependerá de la diferencia de tiempo <em>(k)</em> entre las variables aleatorias</strong>, esta diferencia de tiempo es la que decide el destino de la autocovarianza. La razón de ello es que se asume que se está trabajando con series de tiempo estacionarias, en donde una parte de la serie temporal tiene las mismas propiedades que las demás partes.</p>
-<p>El hecho de que se tenga la serie de tiempo como una realización de un proceso estocástico, permite aproximar la función de autocovarianza al coeficiente de autocovarianza <span class="math inline">\(C_k\)</span></p>
+<p>El hecho de que se tenga la serie de tiempo como una realización de un proceso estocástico, permite aproximar la función de autocovarianza al coeficiente de autocovarianza <span class="math inline">\(C_k\)</span>.</p>
 </section>
 <section id="función-de-autocorrelación-acf" class="level3">
 <h3 class="anchored" data-anchor-id="función-de-autocorrelación-acf">Función de autocorrelación (ACF)</h3>
@@ -251,11 +251,10 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="estacionariedad">Estacionariedad</h3>
 <p>Lo que se quiere es que una serie de tiempo sea estacionaria, que no haya ningún cambio sistemático en sus propiedades y comportamiento.</p>
 <ul>
-<li>No se quieren ver cambios en la media.</li>
-<li>No se quiere ver una tendencia en una serie temporal estacionaria.</li>
-<li>No se quieren cambios sistemáticos en la variación.<br>
-</li>
-<li>No se quieren fluctuaciones periódicas.</li>
+<li>No se quieren ver cambios en la media</li>
+<li>No se quiere ver una tendencia en una serie temporal estacionaria</li>
+<li>No se quieren cambios sistemáticos en la variación</li>
+<li>No se quieren fluctuaciones periódicas</li>
 </ul>
 <p><strong>Lo que se quiere es que las propiedades de una sección de los datos sean muy parecidas a las propiedades de las otras secciones.</strong></p>
 <p>La estacionariedad es una propiedad de un proceso estocástico de un modelo, no de una serie temporal en sí, pero se habla de serie temporal estacionaria si se piensa que se puede modelar mediante modelos estacionarios <strong>(procesos estocásticos estacionarios)</strong>.</p>
